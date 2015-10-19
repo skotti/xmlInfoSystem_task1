@@ -136,8 +136,13 @@ public class xmlDocImpl implements xmlDoc{
                help = numberOfCandidates.item(i).getChildNodes();
                
                //item(0) is #text - ??? what is that??
-               System.out.println(help.item(1).getNodeName());
-               String text = help.item(1).getTextContent();
+               //we should choose the right child
+               int j=0;
+               while(!(help.item(j).getNodeName().equals(identityHelper)))
+                       j+=1;
+               
+               System.out.println(help.item(j).getNodeName());
+               String text = help.item(j).getTextContent();
                System.out.println(text);
                if (identityvalue.equals(text)) {
                    break;
