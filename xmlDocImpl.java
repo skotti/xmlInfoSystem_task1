@@ -30,30 +30,45 @@ import org.xml.sax.SAXException;
 
 
 /**
- *
+ * TODO: What is this class supposed to do? Shortly describe it's functionality and scope of problems
  * @author mac
  */
 public class xmlDocImpl implements xmlDoc{
     
-    int findMode;//we should enter it at the beginning
+    private int findMode;//we should enter it at the beginning
     
-    Document doc;
-    Element rootElement;
-    String rootName;
+    private Document doc; //Not sure if it does not destroy your code, but usually fields are private. 
+    //It is a bad practice to have non-private fields
+    
+    private Element rootElement;
+    private String rootName;
     
     //find information
-    String findName;
-    String findId;
+    private String findName;
+    private String findId;
+
+    /**
+     * A perfect way for implementation of such methods is the following:
+     * method addObject(attributes) {
+     * 		element = retrieveElement(attributes);
+     * 		validateElement(element); //Throws exception, if invalid
+     * 		addElement(element);
+     * }
+     * And somewhere in the end or in separate class, called "controller", implement those methods.
+     */
 
     @Override
     //Как понять на какую иерархию хотим вставлять??
+    //ROTU: например, указывать помимо объекта вставки его парент. 
     public Element[] addObject(String[] atributes) {
      //Прибавили к корневому элементу наш присоединяемый элемент, прибавили к новому элементу имя   
-        String elemName = atributes[2];    
+        String elemName = atributes[2];    //Numbers inside code - bad practice.
+        //You better specify somewhere at the top of class some format, i.e.
+        // private final static int ELEM_NAME_ID = 2 and then use it.
         String id = atributes[0];  
         String name = atributes[1];
         
-        if (name.length()<3)
+        if (name.length()<3) //It's better to handle validation separately. I.e., use private method.
             System.err.println("Valdation error. Please, enter an appropriate name");
         
         //это создание заменить на вызов конструктора элемента 
