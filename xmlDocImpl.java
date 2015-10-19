@@ -109,8 +109,8 @@ public class xmlDocImpl implements xmlDoc{
     @Override
     public Element[] deleteObject(int name) {
              
-        //Element el = doc.getElementById(id);//выбираем то, что нам нужно удалить 
-        //el.getParentNode().removeChild(el);
+        //Search what to delete ;now only function can analize only id value
+        //so elese will not be executed, but it isn't the greatest problem
         Element[] numberOfCandidates = findObject(name);
         
         
@@ -148,7 +148,10 @@ public class xmlDocImpl implements xmlDoc{
         
         
     }
+        //add changes to the document
         transformElement();
+        
+        //returning null is funny but now I should make the upper part working
         return null;
     }
     
@@ -159,14 +162,15 @@ public class xmlDocImpl implements xmlDoc{
     }*/
 
     @Override
-    public Element[] findObject(int id) {//find objects by id
+    public Element[] findObject(int id) {//find objects by id(in my scheme id is deptno so it is not unique,
+        //but it is made only for testing
         
-        //find search elements as children of the special node
-        //use finding with xpath
+        
         Element[] elements;
         XPath xpath = XPathFactory.newInstance().newXPath();
         
         //String search = nodesName[0]+'/'+nodesName[1]+"//*[contains(., attribute)]";
+        //Test string, it is not clear now, how to made [@deptno=id] - it doesn't work!
         String search = "/content/emp/employee[@deptno=10]";
         
         NodeList nodeList = null;
@@ -183,8 +187,9 @@ public class xmlDocImpl implements xmlDoc{
             Node cur_node = nodeList.item(i);
             if (nodeList.item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                  //elements[i] = (Element) cur_node;
-                 System.out.println(cur_node.getNodeName());//getParentNode());//????
-                 elements[curElem] = (Element) nodeList.item(i);
+                 System.out.println(cur_node.getNodeName());
+                 elements[curElem] = (Element) nodeList.item(i);//It seems to me that it is't right simply
+                 //adding elements in array, as it doesn't work now
                  curElem+=1;
             }
         }

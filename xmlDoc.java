@@ -49,11 +49,14 @@ public interface xmlDoc {
      * @param attribute :if we know the concrete document structure, then we can use XPath and get the part of it 
      * with help of these nodeName , f.e. /emp/employee will look like /nodesName[0]/nodesName[1]
      * @return an array of found elements with given textValue
-     */
+     *///yes, now the parameter is id, but we will have two functions - if person search with help of id or 
+    //with help of the name and any other parameter.
     public Element[] findObject(int id) ;
     
     public String editObject(String id,String[] values) ;
-    
+    /**
+     * It should transform the document according to recent changes
+     */
     public void transformElement();
     
     
