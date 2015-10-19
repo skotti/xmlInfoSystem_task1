@@ -14,20 +14,34 @@ import org.w3c.dom.Element;
  */
 public interface xmlDoc {
     
+    /**
+     * Returns the root name in our document
+     * @return String : the root name
+     */
     public String getRootName();
     
     /**
      * This function inits the DOM model, sets the rootname and rootid.
-     * @param atributes:output file or any stream
+     * @param file:output file or any stream
      * @return String - the result of creating - successful or not
      */
     public String initObject(File file);
     
    // public String initxmlObject(Element elem);
     
+    /**
+     * 
+     * @param atributes : initial values as tagname, attribute and the value o attribute
+     * @return Elements[] : the last find execution, taking the added value into account
+     */
     public Element[] addObject(String[] atributes);
     
-    public String deleteObject(String[] atributes);
+    /**
+     * 
+     * @param id : id parameter for the object, that should be deleted
+     * @return the result of th last find operation
+     */
+    public Element[] deleteObject(int id);
     
     /**
      * 
@@ -36,9 +50,11 @@ public interface xmlDoc {
      * with help of these nodeName , f.e. /emp/employee will look like /nodesName[0]/nodesName[1]
      * @return an array of found elements with given textValue
      */
-    public Element[] findObject(String attribute) ;
+    public Element[] findObject(int id) ;
     
     public String editObject(String id,String[] values) ;
+    
+    public void transformElement();
     
     
 }
