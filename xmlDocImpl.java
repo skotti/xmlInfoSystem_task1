@@ -111,14 +111,16 @@ public class xmlDocImpl implements xmlDoc{
              
         //Search what to delete ;now only function can analize only id value
         //so elese will not be executed, but it isn't the greatest problem
-        Element[] numberOfCandidates = findObject(name);
+        NodeList numberOfCandidates = findObject(name);
+        
+        System.out.println(numberOfCandidates.getLength());
         
         
         
-        if(numberOfCandidates.length == 1) {
+        if(numberOfCandidates.getLength() == 1) {
             
             System.out.println("We've found one candidate for deletion. Procceding to delete...");
-            numberOfCandidates[0].getParentNode().removeChild(numberOfCandidates[0]);
+            numberOfCandidates.item(0).getParentNode().removeChild(numberOfCandidates.item(0));
             
         } else {
             
@@ -129,10 +131,14 @@ public class xmlDocImpl implements xmlDoc{
            
            NodeList help = null;
            int i;
-           for (i = 0; i < numberOfCandidates.length; i++) {
+           for (i = 0; i < numberOfCandidates.getLength(); i++) {
                
-               help = numberOfCandidates[i].getElementsByTagName(identityHelper);
-               String text = help.item(0).getTextContent();
+               help = numberOfCandidates.item(i).getChildNodes();
+               
+               //item(0) is #text - ??? what is that??
+               System.out.println(help.item(1).getNodeName());
+               String text = help.item(1).getTextContent();
+               System.out.println(text);
                if (identityvalue.equals(text)) {
                    break;
                }
@@ -162,7 +168,7 @@ public class xmlDocImpl implements xmlDoc{
     }*/
 
     @Override
-    public Element[] findObject(int id) {//find objects by id(in my scheme id is deptno so it is not unique,
+    public NodeList findObject(int id) {//find objects by id(in my scheme id is deptno so it is not unique,
         //but it is made only for testing
         
         
@@ -188,12 +194,12 @@ public class xmlDocImpl implements xmlDoc{
             if (nodeList.item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                  //elements[i] = (Element) cur_node;
                  System.out.println(cur_node.getNodeName());
-                 elements[curElem] = (Element) nodeList.item(i);//It seems to me that it is't right simply
+                 //elements[curElem] = (Element) nodeList.item(i);//It seems to me that it is't right simply
                  //adding elements in array, as it doesn't work now
-                 curElem+=1;
+                 //curElem+=1;
             }
         }
-        return elements;
+        return nodeList;
              
     
     }
