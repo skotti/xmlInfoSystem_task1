@@ -35,53 +35,35 @@ import org.xml.sax.SAXException;
  */
 public class xmlDocImpl implements xmlDoc{
     
-    int findMode;//we should enter it at the beginning
+    private int findMode;//we should enter it at the beginning
     
-    Document doc;
-    Element rootElement;
-    String rootName;
+    private Document doc;
+    private Element rootElement;
+    private String rootName;
     
-    //find information
-    String findName;
-    String findId;
+    //find information from the previous find() function
+    private String findName;
+    private String findId;
+    
+    Controller contr = new Controller();
+    
+    private boolean validateName(String name) {
+        if (name.length()<3){
+            System.err.println("Valdation error. Please, enter an appropriate name");
+            return false;
+        }
+        return true;
+    }
 
     @Override
     //Как понять на какую иерархию хотим вставлять??
     public Element[] addObject(String[] atributes) {
-     //Прибавили к корневому элементу наш присоединяемый элемент, прибавили к новому элементу имя   
-        String elemName = atributes[2];    
-        String id = atributes[0];  
-        String name = atributes[1];
         
-        if (name.length()<3)
-            System.err.println("Valdation error. Please, enter an appropriate name");
         
-        //это создание заменить на вызов конструктора элемента 
-        //Element elemname = doc.createElement("name");
-        Element newElement = doc.createElement(elemName);//добавить обработку id к узлу
-        newElement.setAttribute(atributes[0], atributes[1]);
+        xmlElem element = contr.retrieveElement(doc, atributes);
+        validateName(element.getName());
         
-        //newElement.appendChild(elemname);
-        doc.getElementsByTagName(rootName).item(0).appendChild(newElement);
-        
-        //Element[] findRes = findObject(findName);
-        //**********************************************************************
-        //xmlElemImpl xmlElem
-        
-        try {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-	DOMSource source = new DOMSource(doc);
-	StreamResult result = new StreamResult(new File("/Users/mac/NetBeansProjects/xml_netk/src/xml_netk/source.xml"));
-
-        
-            // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
-
-            transformer.transform(source, result);
-        } catch (TransformerException ex) {
-            Logger.getLogger(xmlDocImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        transformElement();
         
         return null;
     }

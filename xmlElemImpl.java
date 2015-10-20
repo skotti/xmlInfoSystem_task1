@@ -14,31 +14,44 @@ import org.w3c.dom.Element;
  */
 public class xmlElemImpl implements xmlElem{
     
-    Element elem;
+    private Element elem;
     
-    //String tagName;
-    //String id;
+    private String tagName;
+    private String id;
+    private String rootName = "emp";
     //String elemName;
-   // String name;
+    //String elemname;
 
     @Override
-    public Element initObject(Document doc, String id, String elemName) {
+    public xmlElem initObject(Document doc, String id, String tagname) {
         
-        Element elemname = doc.createElement("name");
-        Element newElement = doc.createElement(elemName);//добавить обработку id к узлу
+        Element elem = doc.createElement(tagname);
+        this.id = id;
+        this.tagName = tagname;
+        elem.setAttribute("id", id);
+        doc.getElementsByTagName(rootName).item(0).appendChild(elem);
+        //Element newElement = doc.createElement(elemName);//добавить обработку id к узлу
         
-        newElement.appendChild(elemname);
+        //newElement.appendChild(elemname);
         
-        return newElement;
+        return this;
     }
 
 
     @Override
-    public void setName(Element elem, String tagName, String attribute) {
+    public Element setName(String id, String attribute, String value) {
         
-        elem.setAttribute(tagName, attribute);
+        //1.Find element with this id
+        elem.setAttribute(attribute, value);
         
+        return elem;    
         
+    }
+    
+    @Override
+    public String getName() {
+        
+        return this.tagName;
     }
     
     

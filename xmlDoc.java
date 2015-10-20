@@ -7,6 +7,7 @@ package xml_netk;
 
 import java.io.File;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -51,7 +52,7 @@ public interface xmlDoc {
      * @return an array of found elements with given textValue
      *///yes, now the parameter is id, but we will have two functions - if person search with help of id or 
     //with help of the name and any other parameter.
-    public Element[] findObject(int id) ;
+    public NodeList findObject(int id) ;
     
     public String editObject(String id,String[] values) ;
     /**

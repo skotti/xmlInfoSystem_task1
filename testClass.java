@@ -22,12 +22,16 @@ public class testClass {
     xmlDocImpl xm = new xmlDocImpl();
     
     System.out.println(xm.initObject(newFile));
+    String[] atributes = new String[2];
+    atributes[0] = "1555";
+    atributes[1] = "employee";
+    xm.addObject(atributes);
     
     //System.out.println(xm.getRootName());
     
     //NodeList el = xm.findObject(10);
     
-    xm.deleteObject(50);
+    //xm.deleteObject(50);
    
     //String[] atributes = new String[3];
     /*atributes[0] = "deptno";

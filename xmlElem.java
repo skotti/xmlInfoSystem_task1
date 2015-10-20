@@ -14,10 +14,26 @@ import org.w3c.dom.Element;
  */
 public interface xmlElem {
     
-    public Element initObject(Document doc, String id, String elemName);
+    /**
+     * 
+     * @param doc     : Document, where we want to create a new object
+     * @param id      : object id
+     * @param tagname : object's tagname
+     * @return        Element
+     */
+    public xmlElem initObject(Document doc, String id, String tagname);
     
     //public Element modifyObject(Element currentElement, String[] values);
     
-    public void setName(Element elem, String tagName, String attribute);
+    /**
+     * 
+     * @param id        : which id of this element we should modify ( if we have some children for example)
+     * @param attribute : which attribute we should modify
+     * @param value     : which value we should modify
+     * @return 
+     */
+    public Element setName(String id, String attribute, String value);
+    
+    public String getName();
     
 }
