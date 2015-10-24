@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><content xmlns="ns:emp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:emp emp.xsd">
-	<emp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><emp>
 		<employee deptno="10" empno="7369" mgr="7902">
-			<ename>SMITH</ename>
 			<job>CLERK</job>
 			<hiredate>1980-12-17</hiredate>
 			<sal>800.00</sal>
@@ -14,20 +12,8 @@
 			<sal>1600.00</sal>
 			<comm>300.00</comm>
 		</employee>
-		<employee deptno="30" empno="7521" mgr="7698">
-			<ename>WARD</ename>
-			<job>SALESMAN</job>
-			<hiredate>1981-02-22</hiredate>
-			<sal>1250.00</sal>
-			<comm>500.00</comm>
-		</employee>
-		<employee deptno="20" empno="7566" mgr="7839">
-			<ename>JONES</ename>
-			<job>MANAGER</job>
-			<hiredate>1981-04-02</hiredate>
-			<sal>2975.00</sal>
-			<comm>0.0</comm>
-		</employee>
+		
+		
 		<employee deptno="30" empno="7654" mgr="7698">
 			<ename>MARTIN</ename>
 			<job>SALESMAN</job>
@@ -77,13 +63,7 @@
 			<sal>1100.00</sal>
 			<comm>0.0</comm>
 		</employee>
-		<employee deptno="30" empno="7900" mgr="7698">
-			<ename>JAMES</ename>
-			<job>CLERK</job>
-			<hiredate>1981-12-03</hiredate>
-			<sal>950.00</sal>
-			<comm>0.0</comm>
-		</employee>
+		
 		<employee deptno="20" empno="7902" mgr="7566">
 			<ename>FORD</ename>
 			<job>ANALYST</job>
@@ -93,51 +73,9 @@
 		</employee>
 		<employee deptno="10" empno="7934" mgr="7782">
 			<ename>MILLER</ename>
-			<job>CLERK</job>
-			<hiredate>1982-01-23</hiredate>
+			<job>CLERK</job><hiredate>1982-01-23</hiredate>
 			<sal>1300.00</sal>
 			<comm>0.0</comm>
 		</employee>
-	<employee deptno="1555"/></emp>
-	<dept>
-		<department deptno="10">
-			<dname>ACCOUNTING</dname>
-			<loc>NEW YORK</loc>
-		</department>
-		<department deptno="20">
-			<dname>RESEARCH</dname>
-			<loc>DALLAS</loc>
-		</department>
-		<department deptno="30">
-			<dname>SALES</dname>
-			<loc>CHICAGO</loc>
-		</department>
-		<department deptno="40">
-			<dname>OPERATIONS</dname>
-			<loc>BOSTON</loc>
-		</department>
-	</dept>
-	<salgrade>
-		<sal grade="1">
-			<losal>700</losal>
-			<hisal>1200</hisal>
-		</sal>
-		<sal grade="2">
-			<losal>1201</losal>
-			<hisal>1400</hisal>
-		</sal>
-		<sal grade="3">
-			<losal>1401</losal>
-			<hisal>2000</hisal>
-		</sal>
-		<sal grade="4">
-			<losal>2001</losal>
-			<hisal>3000</hisal>
-		</sal>
-		<sal grade="5">
-			<losal>3001</losal>
-			<hisal>9999</hisal>
-		</sal>
-	</salgrade>
-<employee deptno="1555"/>
-</content>
+	<name id="1555"/><employee id="1555"/>
+    <employee id="1222"/><employee id="1225"/></emp>

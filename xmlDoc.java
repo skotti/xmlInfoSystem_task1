@@ -6,11 +6,13 @@
 package xml_netk;
 
 import java.io.File;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- *
+ *This interface interacts with xml documents and can find, read, add and edit information.
+ *You should pass the address of edited xml document and the call functions with appropriate arguments.
  * @author mac
  */
 public interface xmlDoc {
@@ -22,43 +24,75 @@ public interface xmlDoc {
     public String getRootName();
     
     /**
-     * This function inits the DOM model, sets the rootname and rootid.
+     * This function inits the DOM model, sets the rootname and rootElement.
      * @param file:output file or any stream
      * @return String - the result of creating - successful or not
      */
     public String initObject(File file);
-    
-   // public String initxmlObject(Element elem);
+   
     
     /**
-     * 
-     * @param atributes : initial values as tagname, attribute and the value o attribute
-     * @return Elements[] : the last find execution, taking the added value into account
+     * This function appends a new node to our structure
+     * The first two attributes should be id number and the name of tag
+     * @param atributes : values of atributes of new object
      */
-    public Element[] addObject(String[] atributes);
+    public void addObject(String[] atributes);
     
     /**
-     * 
-     * @param id : id parameter for the object, that should be deleted
-     * @return the result of th last find operation
+     * This function delete the specified object. Inside we call find() funtion which will find all appropriate nodes.
+     * If there is more than one node, delete() function will ask the user to specify another attribute to be able 
+     * to distinguish the concrete Node (TODO: ask user, until there will be one node, now this works only ones)
+     * @param tagname Tag of the object we want to delete
+     * @param atributeName Name of the atribute of the element we want to delete
+     * @param atribute Value of the atribute of the alement we want to delete
      */
-    public Element[] deleteObject(int id);
+    public void deleteObject(String tagname, String atributeName, String atribute);
     
     /**
-     * 
-     * 
-     * @param attribute :if we know the concrete document structure, then we can use XPath and get the part of it 
-     * with help of these nodeName , f.e. /emp/employee will look like /nodesName[0]/nodesName[1]
+     * This function finds all the nodes, which have the specified attribute.
+     * @param tagname Tagname of the node we want to find
+     * @param atributeName The name of attribute we want to use duting the process of finding
+     * @param atribute The value of attribute
      * @return an array of found elements with given textValue
      *///yes, now the parameter is id, but we will have two functions - if person search with help of id or 
     //with help of the name and any other parameter.
-    public NodeList findObject(int id) ;
+    public NodeList findObject(String tagname, String atributeName, String atribute);
     
-    public String editObject(String id,String[] values) ;
+    /**
+     * 
+     * @param tagName The tag name of edited object
+     * @param id The id of he specified object 
+     */
+    public void editObject(String tagName, String id);
+    
     /**
      * It should transform the document according to recent changes
      */
     public void transformElement();
+    
+    /**
+     * Returns the current version of the document
+     * @return Document
+     */
+    public Document getDocument();
+    
+    /**
+     * Sets the tag of found information
+     * @param findTag 
+     */
+    public void setfindTag(String findTag);
+    
+    /**
+     * Sets the name of found information
+     * @param findname 
+     */
+    public void setfindName(String findname);
+    
+    /**
+     * Sets the attribute of found information
+     * @param findatr 
+     */
+    public void setfindAtr(String findatr);
     
     
 }

@@ -21,11 +21,15 @@ public class testClass {
     
     xmlDocImpl xm = new xmlDocImpl();
     
-    System.out.println(xm.initObject(newFile));
+    xm.initObject(newFile);
     String[] atributes = new String[2];
-    atributes[0] = "1555";
+    atributes[0] = "1226";
     atributes[1] = "employee";
-    xm.addObject(atributes);
+    
+    //xm.addObject(atributes);
+    //xm.deleteObject("employee", "id", "1226");
+    xm.findObject("employee", "id", "1225");
+    //xm.deleteObject("employee", "id", "1222");
     
     //System.out.println(xm.getRootName());
     

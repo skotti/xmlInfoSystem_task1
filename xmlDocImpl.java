@@ -24,6 +24,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -35,17 +36,19 @@ import org.xml.sax.SAXException;
  */
 public class xmlDocImpl implements xmlDoc{
     
-    private int findMode;//we should enter it at the beginning
-    
+    //Document information
     private Document doc;
     private Element rootElement;
     private String rootName;
     
     //find information from the previous find() function
     private String findName;
+    private String findAtr;
+    private String findTag;
     private String findId;
     
     Controller contr = new Controller();
+    Printer print = new PrinterClass();
     
     private boolean validateName(String name) {
         if (name.length()<3){
@@ -56,16 +59,17 @@ public class xmlDocImpl implements xmlDoc{
     }
 
     @Override
-    //Как понять на какую иерархию хотим вставлять??
-    public Element[] addObject(String[] atributes) {
+    public void addObject(String[] atributes) {
         
         
-        xmlElem element = contr.retrieveElement(doc, atributes);
+        xmlElem element = contr.retrieveElement(doc, rootName, atributes);
         validateName(element.getName());
-        
         transformElement();
         
-        return null;
+        if(element.getName().equals(findName))
+            System.out.println("Added and equal with find");
+        else
+            System.out.println("Added and not equal with find");
     }
     
     @Override
@@ -76,28 +80,16 @@ public class xmlDocImpl implements xmlDoc{
 	DOMSource source = new DOMSource(doc);
 	StreamResult result = new StreamResult(new File("/Users/mac/NetBeansProjects/xml_netk/src/xml_netk/source.xml"));
 
-        
-            // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
-
             transformer.transform(source, result);
         } catch (TransformerException ex) {
             Logger.getLogger(xmlDocImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+        } 
     }
 
     @Override
-    public Element[] deleteObject(int name) {
-             
-        //Search what to delete ;now only function can analize only id value
-        //so elese will not be executed, but it isn't the greatest problem
-        NodeList numberOfCandidates = findObject(name);
-        
-        System.out.println(numberOfCandidates.getLength());
-        
-        
+    public void deleteObject(String tagname, String atributeName, String atribute) {
+
+        NodeList numberOfCandidates = findObject(tagname,atributeName, atribute); 
         
         if(numberOfCandidates.getLength() == 1) {
             
@@ -106,86 +98,28 @@ public class xmlDocImpl implements xmlDoc{
             
         } else {
             
-           Scanner sc = new Scanner(System.in);//если мы нашли значений больше, чем надо
-           
+           Scanner sc = new Scanner(System.in);
            String identityHelper = sc.nextLine();
            String identityvalue = sc.nextLine();
            
-           NodeList help = null;
-           int i;
-           for (i = 0; i < numberOfCandidates.getLength(); i++) {
-               
-               help = numberOfCandidates.item(i).getChildNodes();
-               
-               //item(0) is #text - ??? what is that??
-               //we should choose the right child
-               int j=0;
-               while(!(help.item(j).getNodeName().equals(identityHelper)))
-                       j+=1;
-               
-               System.out.println(help.item(j).getNodeName());
-               String text = help.item(j).getTextContent();
-               System.out.println(text);
-               if (identityvalue.equals(text)) {
-                   break;
-               }
-           }
-           help.item(i).getParentNode().removeChild(help.item(i));
-              
-        //it depends on what we want to pass to our find() function - id value or name value
-       /* if (findMode == 1) {
-            return findObjectbyName(name);
-        } else if (findMode == 0) {
-            return findObjectById();
-        }*/
-        
-        
-    }
-        //add changes to the document
-        transformElement();
-        
-        //returning null is funny but now I should make the upper part working
-        return null;
-    }
+           int selectedItem = 0;
+           selectedItem = contr.selectItem(numberOfCandidates, identityHelper, identityvalue);
+
+           numberOfCandidates.item(selectedItem).getParentNode().removeChild(numberOfCandidates.item(selectedItem));
+        }
+        transformElement();      
+        findObject(findTag, findName, findAtr);
     
-   /* @Override
-    public Element[] findObjectbyName(String name) {
-        
-        
-    }*/
+    }
 
     @Override
-    public NodeList findObject(int id) {//find objects by id(in my scheme id is deptno so it is not unique,
-        //but it is made only for testing
-        
-        
-        Element[] elements;
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        
-        //String search = nodesName[0]+'/'+nodesName[1]+"//*[contains(., attribute)]";
-        //Test string, it is not clear now, how to made [@deptno=id] - it doesn't work!
-        String search = "/content/emp/employee[@deptno=10]";
-        
-        NodeList nodeList = null;
-        
-        try {
-            nodeList = (NodeList) xpath.compile(search).evaluate(doc, XPathConstants.NODESET);
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(xmlDocImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(nodeList.getLength());
-        int curElem = 0;
-        for (int i = 0; i < nodeList.getLength(); i++) {
+    public NodeList findObject(String tagname, String atributeName, String atribute) {
+        contr.initialiseDoc(this, tagname, atributeName, atribute);
 
-            Node cur_node = nodeList.item(i);
-            if (nodeList.item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-                 //elements[i] = (Element) cur_node;
-                 System.out.println(cur_node.getNodeName());
-                 //elements[curElem] = (Element) nodeList.item(i);//It seems to me that it is't right simply
-                 //adding elements in array, as it doesn't work now
-                 //curElem+=1;
-            }
-        }
+        NodeList nodeList = null;
+        nodeList = contr.findElementWithXpath(this, tagname, atributeName, atribute);
+       
+        print.printList(nodeList);
         return nodeList;
              
     
@@ -193,35 +127,53 @@ public class xmlDocImpl implements xmlDoc{
 
     @Override
     public String initObject(File file) {
-        try{
-            
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = factory.newDocumentBuilder();
-        factory.setNamespaceAware(true);
-        doc = factory.newDocumentBuilder().parse(file);
-        
-        rootElement = doc.getDocumentElement();
-        rootName = rootElement.getTagName();
+        try {
+            doc = contr.initDocument(file);     
+            rootElement = doc.getDocumentElement();
+            rootName = rootElement.getTagName();
         
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(xmlDocImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if ((doc != null) && (rootElement != null) && (rootName != null))
+        if ((doc != null) && (rootElement != null) && (rootName != null)) {
+            
+            print.printInfo(doc.getDocumentElement());
+            print.printTextInfo();
             return "The document was created";
-        
+        }
         return "The document wasn't created. Check file state";
     }
     
-    
+
     @Override
-    public String editObject(String id, String[] values) {
+    public void editObject(String tagname, String id) {
+       
+       String scannedAtr;
+       String scannedValue;
+       
+       Scanner sc = new Scanner(System.in);
+       scannedAtr = sc.nextLine();
+       scannedValue = sc.nextLine();
+       
+       changeAtribute(tagname, id, scannedAtr, scannedValue);
+       
+       System.out.println("Edited");
+       transformElement();
+       
+       findObject(findTag, findName, findAtr); 
+    }
+    
+    
+    public void changeAtribute(String tagname, String id, String atr, String value) {
         
-       xmlElemImpl xmlElem = new xmlElemImpl();
-       Element el = xmlElem.setName(id, values[0], values[1]);
-       
-       //setName(el, values[0], values[1]);
-       
-      return null; 
+        NodeList list = findObject(tagname, "id", id);
+        if (list.getLength() > 1) {
+            System.err.println("Not a unique object");
+            System.exit(-1);
+        }
+        Element foundEl = (Element)list.item(0);
+        foundEl.setAttribute(atr, value);
+    
     }
 
     @Override
@@ -230,7 +182,29 @@ public class xmlDocImpl implements xmlDoc{
         return rootName;
     }
 
+    @Override
+    public Document getDocument() {
+        
+        return doc;
+    }
     
+    @Override
+    public void setfindTag(String findTag) {
+        
+        this.findTag = findTag;
+    }
+    
+    @Override
+    public void setfindName(String findname) {
+        
+        this.findName = findname;
+    }
+    
+    @Override
+    public void setfindAtr(String findatr) {
+        
+        this.findAtr = findatr;
+    }
     
     
 }

@@ -9,19 +9,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ *This interface represents Element structure
+ * (TODO: make it more involved in the work of main Doc class)
  * @author mac
  */
 public interface xmlElem {
     
     /**
      * 
-     * @param doc     : Document, where we want to create a new object
-     * @param id      : object id
-     * @param tagname : object's tagname
+     * @param doc       Document, where we want to create a new object
+     * @param rootName  name of the root
+     * @param atributes atributes of this element
      * @return        Element
      */
-    public xmlElem initObject(Document doc, String id, String tagname);
+    public xmlElem initObject(Document doc, String rootName,String[] atributes);
     
     //public Element modifyObject(Element currentElement, String[] values);
     
