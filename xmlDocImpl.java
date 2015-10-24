@@ -47,8 +47,15 @@ public class xmlDocImpl implements xmlDoc{
     private String findTag;
     private String findId;
     
-    Controller contr = new Controller();
-    Printer print = new PrinterClass();
+    Controller contr;
+    Printer print;
+    
+    
+    public xmlDocImpl() { 
+        
+        contr = new Controller();
+        print = new PrinterClass();
+    }
     
     private boolean validateName(String name) {
         if (name.length()<3){
@@ -60,8 +67,7 @@ public class xmlDocImpl implements xmlDoc{
 
     @Override
     public void addObject(String[] atributes) {
-        
-        
+
         xmlElem element = contr.retrieveElement(doc, rootName, atributes);
         validateName(element.getName());
         transformElement();
